@@ -31,7 +31,7 @@ class TimeBasedDemoServiceTest {
                 Mono.delay(Duration.ofSeconds(10)).thenReturn("slow"),
                 Duration.ofSeconds(2),
                 "fallback");
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> monoString)
                 .expectSubscription()
                 .expectNoEvent(Duration.ofSeconds(1))   // nothing yet after 1s
@@ -47,7 +47,7 @@ class TimeBasedDemoServiceTest {
                 Mono.delay(Duration.ofSeconds(1)).thenReturn("fast"),
                 Duration.ofSeconds(2),
                 "fallback");
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> monoString)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(1))
@@ -61,7 +61,7 @@ class TimeBasedDemoServiceTest {
     void slowEmission_emitsOneItemPerSecond() {
         // arrange
         Flux<String> flux = service.slowEmission(List.of("a", "b", "c"));
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> flux)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(1)).expectNext("a")
@@ -81,7 +81,7 @@ class TimeBasedDemoServiceTest {
                         ? Mono.<String>error(new IllegalStateException("fail"))
                         : Mono.just("ok"));
         Mono<String> retry = service.withBackoff(mono);
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> retry)
                 .expectSubscription()
                 // t=0 attempt 1 fails, t=10s attempt 2 fails, t=30s attempt 3 succeeds
@@ -103,7 +103,7 @@ class TimeBasedDemoServiceTest {
             return Mono.<String>error(new IllegalStateException("always fails"));
         });
         Mono<String> retry = service.withBackoff(mono);
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> retry)
                 .expectSubscription()
                 // Delays: 10s + 20s + 40s = 70s, then the retries are exhausted
@@ -120,7 +120,7 @@ class TimeBasedDemoServiceTest {
     void poll_emitsEvery30Seconds() {
         // arrange
         Flux<Long> flux = service.poll();
-        // act && assert
+        // act & assert
         StepVerifier.withVirtualTime(() -> flux)
                 .expectSubscription()
                 .expectNoEvent(Duration.ofSeconds(29))

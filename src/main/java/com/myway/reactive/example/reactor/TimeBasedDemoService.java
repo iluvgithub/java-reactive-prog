@@ -36,6 +36,9 @@ public class TimeBasedDemoService {
 
     /** Polls every 30 seconds, 3 times. */
     public Flux<Long> poll() {
-        return Flux.interval(Duration.ofSeconds(30)).take(3);
+        return
+                Flux
+                        .interval(Duration.ofSeconds(30))
+                        .take(3);
     }
 }
